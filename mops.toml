@@ -1,0 +1,5 @@
+# Motoko package manifest (mops.one). `mops install` fetches packages
+# into ~/.mops; the build command expands them via `mops sources`.
+# core 2.3.1 is the team's production pin (see thebes-deploy setup).
+[dependencies]
+core = "2.3.1"

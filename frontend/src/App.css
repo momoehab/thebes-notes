@@ -1,0 +1,257 @@
+/* Thebes house palette: papyrus cream + lapis blue by day, night blue by
+   dark. Serif for display, mono for the technical voice.
+
+   Theme resolution, in precedence order:
+     1. :root[data-theme="light"|"dark"]  — an explicit choice (useTheme)
+     2. prefers-color-scheme              — the operating system
+     3. the light values below            — the fallback
+   Every colour below is a variable, so the Memphis strip and anything you
+   add inherit the theme for free — never hardcode a hex in a rule. */
+
+:root {
+  --papyrus: #f6efdd;      /* page background */
+  --papyrus-deep: #ece1c5; /* borders, wells */
+  --surface: #fffdf6;      /* panel background */
+  --lapis: #1f4e8c;        /* accent, buttons */
+  --lapis-deep: #16365f;   /* headings */
+  --ink: #2b2417;          /* body text */
+  --error: #8c2f1f;
+}
+
+/* Dark values, defined once and referenced by both selectors below. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papyrus: #11161d;
+    --papyrus-deep: #232d3b;
+    --surface: #171e28;
+    --lapis: #7aa7e0;
+    --lapis-deep: #a8c6ee;
+    --ink: #e6e0cf;
+    --error: #ea8b76;
+  }
+}
+
+:root[data-theme="dark"] {
+  --papyrus: #11161d;
+  --papyrus-deep: #232d3b;
+  --surface: #171e28;
+  --lapis: #7aa7e0;
+  --lapis-deep: #a8c6ee;
+  --ink: #e6e0cf;
+  --error: #ea8b76;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--papyrus);
+  color: var(--ink);
+  font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+}
+
+.shell {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 2rem;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.cartouche {
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--lapis);
+}
+
+h1 {
+  margin: 0.4rem 0 0;
+  font-size: 1.85rem;
+  letter-spacing: 0.02em;
+  color: var(--lapis-deep);
+}
+
+.strap {
+  margin: 0.3rem 0 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  color: var(--lapis);
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--papyrus-deep);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.85rem;
+  box-shadow: 0 1px 0 var(--papyrus-deep);
+}
+
+.panel h2 {
+  margin: 0 0 0.65rem;
+  font-size: 0.8rem;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--lapis);
+}
+
+form {
+  display: flex;
+  gap: 0.6rem;
+}
+
+input {
+  flex: 1;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--papyrus-deep);
+  border-radius: 4px;
+  font: inherit;
+  background: var(--papyrus);
+}
+
+button {
+  padding: 0.55rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  background: var(--lapis);
+  color: var(--papyrus);
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: var(--lapis-deep);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.reply {
+  margin: 1rem 0 0;
+  font-style: italic;
+}
+
+.count {
+  margin: 0 0 0.65rem;
+  font-size: 1.1rem;
+}
+
+.error {
+  color: var(--error);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+}
+
+footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--lapis);
+  opacity: 0.75;
+}
+
+/* ─── theme toggle ───────────────────────────────────────────────────
+   Sits in the header's top-right corner, anchored to .shell so it tracks
+   the content column on any width. */
+
+.shell {
+  position: relative;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1;
+  /* A real surface + border: transparent-on-papyrus was effectively
+     invisible in light mode. */
+  background: var(--surface);
+  color: var(--lapis);
+  border: 1px solid var(--papyrus-deep);
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  background: var(--papyrus-deep);
+  color: var(--lapis-deep);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--lapis);
+  outline-offset: 2px;
+}
+
+body,
+.panel,
+input,
+button {
+  transition: background-color 120ms ease, color 120ms ease,
+    border-color 120ms ease;
+}
+
+/* ─── Memphis identity strip ─────────────────────────────────────── */
+
+.panel.memphis {
+  border-left: 3px solid var(--lapis);
+}
+
+.panel.memphis .who {
+  margin: 0 0 0.65rem;
+  font-size: 1.05rem;
+}
+
+.panel.memphis .tag {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  color: var(--lapis);
+  opacity: 0.8;
+}
+
+.hint {
+  margin: 0.65rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--ink);
+  opacity: 0.7;
+}
+
+.hint code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  background: var(--papyrus-deep);
+  padding: 0.05rem 0.25rem;
+  border-radius: 3px;
+}
+
+.panel.memphis .row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--lapis);
+  border: 1px solid var(--papyrus-deep);
+}
+
+button.secondary:hover:not(:disabled) {
+  background: var(--papyrus-deep);
+}
